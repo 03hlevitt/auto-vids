@@ -9,6 +9,7 @@ import os
 import glob
 
 from moviepy.editor import *
+from upload import upload
 
 openai.api_key = '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'
 
@@ -165,10 +166,10 @@ def create_movie(mp3_list, jpg_list, topic):
     videoclip = concatenate_videoclips(frames, method="chain")
 
     videoclip.audio = audioclip
-
-    videoclip.write_videofile('final_' + topic + '.mp4', fps=24)
-
-    print('Final clip created as final_' + topic + '.mp4')
+    file_name = f"final_{topic}.mp4"
+    print(file_name)
+    videoclip.write_videofile(file_name, fps=24)
+    return file_name, topic
 
 
 script = image_creator(parse_script(create_script(subject)))
@@ -184,7 +185,10 @@ for number in range(len(script)):
 
     jpg_list.append(save_image(list(script.values())[number], subject, number + 1))
 
-create_movie(mp3_list, jpg_list, subject)
+movie_file_name, title = create_movie(mp3_list, jpg_list, subject)
+
+upload(file=movie_file_name, title=title, description="title", category="22", keywords="animals",
+       privacyStatus="public")
 
 files = glob.glob(subject + '*')
 
