@@ -25,7 +25,7 @@ def create_script(subject):
 
         model='text-davinci-003',
 
-        prompt='Write a 200 word Youtube video script about a ' + subject + ' with voiceovers and 5 short scene descriptions',
+        prompt='Write a 100 word Youtube video script about a ' + subject + ' with voiceovers and 5 short scene descriptions',
 
         temperature=0.7,
 
@@ -179,11 +179,12 @@ print(script)
 jpg_list = []
 
 mp3_list = []
-
-for number in range(len(script)):
+i = 0
+while i < 4: # speed and file size
     try:
-        mp3_list.append(text_to_speech(list(script.keys())[number], subject, number + 1))
-        jpg_list.append(save_image(list(script.values())[number], subject, number + 1))
+        mp3_list.append(text_to_speech(list(script.keys())[i], subject, i + 1))
+        jpg_list.append(save_image(list(script.values())[i], subject, i + 1))
+        i += 1
     except Exception as e:
         print(f"failed to take image {e}")
 movie_file_name, title = create_movie(mp3_list, jpg_list, subject)
