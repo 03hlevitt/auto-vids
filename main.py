@@ -181,8 +181,8 @@ jpg_list = []
 mp3_list = []
 
 for number in range(len(script)):
-    mp3_list.append(text_to_speech(list(script.keys())[number], subject, number + 1))
     try:
+        mp3_list.append(text_to_speech(list(script.keys())[number], subject, number + 1))
         jpg_list.append(save_image(list(script.values())[number], subject, number + 1))
     except Exception as e:
         print(f"failed to take image {e}")
