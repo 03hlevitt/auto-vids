@@ -1,18 +1,17 @@
 #!/usr/bin/python
 
-import httplib
 import httplib2
 import os
 import random
 import sys
 import time
 
-from apiclient.discovery import build
-from apiclient.errors import HttpError
-from apiclient.http import MediaFileUpload
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+from googleapiclient.http import MediaFileUpload
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
-from oauth2client.tools import argparser, run_flow
+from oauth2client.tools import run_flow
 
 # Explicitly tell the underlying HTTP transport library not to retry, since
 # we are handling retry logic ourselves.
@@ -22,10 +21,7 @@ httplib2.RETRIES = 1
 MAX_RETRIES = 10
 
 # Always retry when these exceptions are raised.
-RETRIABLE_EXCEPTIONS = (httplib2.HttpLib2Error, IOError, httplib.NotConnected,
-                        httplib.IncompleteRead, httplib.ImproperConnectionState,
-                        httplib.CannotSendRequest, httplib.CannotSendHeader,
-                        httplib.ResponseNotReady, httplib.BadStatusLine)
+RETRIABLE_EXCEPTIONS = (httplib2.HttpLib2Error, IOError)
 
 # Always retry when an apiclient.errors.HttpError with one of these status
 # codes is raised.
