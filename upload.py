@@ -71,7 +71,7 @@ def get_authenticated_service(args):
                                    scope=YOUTUBE_UPLOAD_SCOPE,
                                    message=MISSING_CLIENT_SECRETS_MESSAGE)
 
-    storage = Storage("%s-oauth2.json" % args["filename"])
+    storage = Storage("%s-oauth2.json" % args["file"])
     credentials = storage.get()
 
     if credentials is None:

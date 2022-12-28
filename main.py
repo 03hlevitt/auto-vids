@@ -17,7 +17,7 @@ openai.api_key = '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'
 
 # AnimalList = Animals.split(",")
 
-subject = 'Ape'
+subject = 'Anteater'
 
 
 def create_script(subject):
