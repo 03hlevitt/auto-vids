@@ -6,7 +6,7 @@ def upload(file, title, description, category, keywords,
        privacyStatus, thumb):
     # loggin into the channel
     channel = Channel()
-    channel.login("client_secret.json", "credentials.storage")
+    channel.login("client_secrets.json", "credentials.storage")
 
     # setting up the video that is going to be uploaded
     video = LocalVideo(file_path=file)
@@ -14,7 +14,7 @@ def upload(file, title, description, category, keywords,
     # setting snippet
     video.set_title(title)
     video.set_description(description)
-    video.set_tags([keywords.split(",")])
+    video.set_tags(keywords)
     video.set_category(category)
     video.set_default_language("en-US")
 

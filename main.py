@@ -11,13 +11,13 @@ import glob
 from moviepy.editor import *
 from upload import upload
 
-openai.api_key = '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'
+openai.api_key = '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'
 
 # Animals= "Alligator,Anteater,Ape,Armadillo,Baboon,Bat,Bear,Beetle,Bongo,Camel,Centipede,Chameleon,Cheetah,Clownfish,Coati,Cockatoo,Crane,Crocodile,Deer,Drill,Duck,Eagle,Echidna,Elephant,Elk,Flamingo,Fox,Frigatebird,Gila monster,Giraffe,Gorilla,Guanaco,Hamster,Hawk,Hedgehog,Hermit crab,Hippo,Hippopotamus,Horse,Hummingbird,Hyena,Iguana,Impala,Jaguar,Kangaroo,Kingfisher,Kite,Kiwi,Koala,Komodo dragon,Kudu,Lemur,Leopard,Lion,Lionfish,Lizard,Lynx,Mole,Monkey,Newt,Nilgai,Numbat,Okapi,Opossum,Orangutan,Ostrich,Owl,Panda,Panther,Parrot,Peacock,Pelican,Penguin,Pigeon,Platypus,Puffin,Quail,Rabbit,Rattlesnake,Red panda,Reindeer,Rhinoceros,Rooster,Scorpion,Seal,Skunk,Snake,Sparrow,Squirrel,Swan,Toucan,Tiger,Turkey,Turtle,Vulture,Walrus,Wolf,Woodpecker,Yak,Zebra"
 
 # AnimalList = Animals.split(",")
 
-subject = 'Anteater'
+subject = 'Baboon'
 
 
 def create_script(subject):
@@ -187,7 +187,7 @@ for number in range(len(script)):
 
 movie_file_name, title = create_movie(mp3_list, jpg_list, subject)
 
-upload(file=movie_file_name, title=title, description="title", category="animals", keywords="animals",
+upload(file=movie_file_name, title=title, description="title", category="animals", keywords=["animals"],
        privacyStatus="public", thumb=jpg_list[0])
 
 files = glob.glob(subject + '*')
