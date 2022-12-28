@@ -187,8 +187,8 @@ for number in range(len(script)):
 
 movie_file_name, title = create_movie(mp3_list, jpg_list, subject)
 
-upload(file=movie_file_name, title=title, description="title", category="22", keywords="animals",
-       privacyStatus="public")
+upload(file=movie_file_name, title=title, description="title", category="animals", keywords="animals",
+       privacyStatus="public", thumb=jpg_list[0])
 
 files = glob.glob(subject + '*')
 
