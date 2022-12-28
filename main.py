@@ -11,7 +11,7 @@ import glob
 from moviepy.editor import *
 from upload import upload
 
-openai.api_key = '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'
+openai.api_key = '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'
 
 # Animals= "Alligator,Anteater,Ape,Armadillo,Baboon,Bat,Bear,Beetle,Bongo,Camel,Centipede,Chameleon,Cheetah,Clownfish,Coati,Cockatoo,Crane,Crocodile,Deer,Drill,Duck,Eagle,Echidna,Elephant,Elk,Flamingo,Fox,Frigatebird,Gila monster,Giraffe,Gorilla,Guanaco,Hamster,Hawk,Hedgehog,Hermit crab,Hippo,Hippopotamus,Horse,Hummingbird,Hyena,Iguana,Impala,Jaguar,Kangaroo,Kingfisher,Kite,Kiwi,Koala,Komodo dragon,Kudu,Lemur,Leopard,Lion,Lionfish,Lizard,Lynx,Mole,Monkey,Newt,Nilgai,Numbat,Okapi,Opossum,Orangutan,Ostrich,Owl,Panda,Panther,Parrot,Peacock,Pelican,Penguin,Pigeon,Platypus,Puffin,Quail,Rabbit,Rattlesnake,Red panda,Reindeer,Rhinoceros,Rooster,Scorpion,Seal,Skunk,Snake,Sparrow,Squirrel,Swan,Toucan,Tiger,Turkey,Turtle,Vulture,Walrus,Wolf,Woodpecker,Yak,Zebra"
 
@@ -25,7 +25,7 @@ def create_script(subject):
 
         model='text-davinci-003',
 
-        prompt='Write a 100 word Youtube video script about a ' + subject + ' with voiceovers and 3 short scene descriptions',
+        prompt='Write a 50 word Youtube video script about a ' + subject + ' with voiceovers and 2 short scene descriptions',
 
         temperature=0.7,
 
@@ -180,7 +180,7 @@ jpg_list = []
 
 mp3_list = []
 i = 0
-while i < 4: # speed and file size
+while i < 2: # speed and file size
     try:
         mp3_list.append(text_to_speech(list(script.keys())[i], subject, i + 1))
         jpg_list.append(save_image(list(script.values())[i], subject, i + 1))
