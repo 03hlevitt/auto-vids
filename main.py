@@ -2,7 +2,7 @@ import openai
 
 import requests
 
-from gtts import gTTS
+import pyttsx3
 
 import os
 
@@ -11,21 +11,20 @@ import glob
 from moviepy.editor import *
 from upload import upload
 
-openai.api_key = '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'
+openai.api_key = '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'
 
 # Animals= "Alligator,Anteater,Ape,Armadillo,Baboon,Bat,Bear,Beetle,Bongo,Camel,Centipede,Chameleon,Cheetah,Clownfish,Coati,Cockatoo,Crane,Crocodile,Deer,Drill,Duck,Eagle,Echidna,Elephant,Elk,Flamingo,Fox,Frigatebird,Gila monster,Giraffe,Gorilla,Guanaco,Hamster,Hawk,Hedgehog,Hermit crab,Hippo,Hippopotamus,Horse,Hummingbird,Hyena,Iguana,Impala,Jaguar,Kangaroo,Kingfisher,Kite,Kiwi,Koala,Komodo dragon,Kudu,Lemur,Leopard,Lion,Lionfish,Lizard,Lynx,Mole,Monkey,Newt,Nilgai,Numbat,Okapi,Opossum,Orangutan,Ostrich,Owl,Panda,Panther,Parrot,Peacock,Pelican,Penguin,Pigeon,Platypus,Puffin,Quail,Rabbit,Rattlesnake,Red panda,Reindeer,Rhinoceros,Rooster,Scorpion,Seal,Skunk,Snake,Sparrow,Squirrel,Swan,Toucan,Tiger,Turkey,Turtle,Vulture,Walrus,Wolf,Woodpecker,Yak,Zebra"
 
 # AnimalList = Animals.split(",")
 
-subject = 'Bear'
-
+subject = input('Please enter the subject you would like to create a video about: ')
 
 def create_script(subject):
     text = openai.Completion.create(
 
         model='text-davinci-003',
 
-        prompt='Write a 50 word Youtube video script about a ' + subject + ' with voiceovers and 2 short scene descriptions',
+        prompt='Write a 1 minute Youtube video script about a ' + subject + ' with 5 voiceovers and short numbered scene descriptions',
 
         temperature=0.7,
 
@@ -40,14 +39,16 @@ def create_script(subject):
     )
 
     script = text['choices'][0]['text']
+    
+    script = script.split('\n')
+
+    print(script, '\n')
 
     return script
 
 
-def parse_script(script):
+def parse_script(split_script):
     script_dict = {}
-
-    split_script = script.split('\n')
 
     image_blurb = ''
 
@@ -83,50 +84,47 @@ def parse_script(script):
 
 
 def image_creator(script_dict):
-    block_token = 1
 
-    while block_token == 1:
+    try:
 
-        try:
+        for text, blurb in script_dict.items():
 
-            for text, blurb in script_dict.items():
+            print(blurb + '\n')
 
-                print(blurb + '\n')
+            if blurb != '':
+                image = openai.Image.create(
 
-                if blurb != '':
-                    image = openai.Image.create(
+                    prompt=blurb,
 
-                        prompt=blurb,
+                    n=1,
 
-                        n=1,
+                    size="1024x1024"
 
-                        size="1024x1024"
+                )
 
-                    )
+                image_url = image['data'][0]['url']
 
-                    image_url = image['data'][0]['url']
+                script_dict[text] = image_url
 
-                    script_dict[text] = image_url
+            block_token = 0
 
-                block_token = 0
+    except openai.error.InvalidRequestError:
 
-        except:
+        print('Word blocked by OpenAI; please run the script again.')
 
-            print('Word blocked by OpenAI; trying again...\n')
-
-            block_token = 1
+        sys(exit)
 
     return script_dict
 
 
 def text_to_speech(mytext, topic, count):
-    language = 'en'
+    engine = pyttsx3.init()
 
     filename = topic + str(count) + '.mp3'
 
-    myobj = gTTS(text=mytext, lang=language, slow=False)
+    engine.setProperty('rate', 150)
 
-    myobj.save(filename)
+    engine.save_to_file(mytext, filename)
 
     print(filename, 'saved!\n')
 
@@ -147,6 +145,9 @@ def save_image(url, topic, count):
 
 
 def create_movie(mp3_list, jpg_list, topic):
+
+    print(mp3_list, jpg_list)
+
     audio_len_list = []
 
     clips = [AudioFileClip(c) for c in mp3_list]
