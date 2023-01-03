@@ -192,7 +192,7 @@ def collate_media():
     while i < 2:  # speed and file size
         try:
             mp3_list.append(text_to_speech(list(script.keys())[i], subject, i))
-            jpg_list.append(save_image(list(script.values())[], subject, i))
+            jpg_list.append(save_image(list(script.values())[i], subject, i))
             i += 1
         except Exception as e:
             print(f"failed to take image {e}")
