@@ -19,6 +19,7 @@ openai.api_key = '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'
 
 subject = input('Please enter the subject you would like to create a video about: ')
 
+
 def create_script(subject):
     text = openai.Completion.create(
 
@@ -39,7 +40,7 @@ def create_script(subject):
     )
 
     script = text['choices'][0]['text']
-    
+
     script = script.split('\n')
 
     print(script, '\n')
@@ -84,7 +85,6 @@ def parse_script(split_script):
 
 
 def image_creator(script_dict):
-
     try:
 
         for text, blurb in script_dict.items():
@@ -127,7 +127,7 @@ def text_to_speech(mytext, topic, count):
     engine.save_to_file(mytext, filename)
 
     engine.runAndWait()
-    
+
     print(filename, 'saved!\n')
 
     return filename
@@ -147,7 +147,6 @@ def save_image(url, topic, count):
 
 
 def create_movie(mp3_list, jpg_list, topic):
-
     print(mp3_list, jpg_list)
 
     audio_len_list = []
@@ -175,29 +174,43 @@ def create_movie(mp3_list, jpg_list, topic):
     return file_name, topic
 
 
-script = image_creator(parse_script(create_script(subject)))
+def cleanup():
+    files = glob.glob(subject + '*')
 
-print(script)
+    for file in files:
+        os.remove(file)
 
-jpg_list = []
+    print('Subject files removed!')
 
-mp3_list = []
-i = 0
-while i < 2: # speed and file size
+
+def collate_media():
+    script = image_creator(parse_script(create_script(subject)))
+    print(script)
+    jpg_list = []
+    mp3_list = []
+    i = 0
+    while i < 2:  # speed and file size
+        try:
+            mp3_list.append(text_to_speech(list(script.keys())[i], subject, i))
+            jpg_list.append(save_image(list(script.values())[], subject, i))
+            i += 1
+        except Exception as e:
+            print(f"failed to take image {e}")
+    return mp3_list, jpg_list
+
+
+def upload_and_clean(thumb, movie_file_name, title):
     try:
-        mp3_list.append(text_to_speech(list(script.keys())[i], subject, i))
-        jpg_list.append(save_image(list(script.values())[i], subject, i))
-        i += 1
+        upload(file=movie_file_name, title=title, description="title", category="animals", keywords=["animals"],
+               privacyStatus="public", thumb=thumb)
     except Exception as e:
-        print(f"failed to take image {e}")
-movie_file_name, title = create_movie(mp3_list, jpg_list, subject)
+        print("failed with %s", e)
+        cleanup()
+    cleanup()
 
-upload(file=movie_file_name, title=title, description="title", category="animals", keywords=["animals"],
-       privacyStatus="public", thumb=jpg_list[0])
 
-files = glob.glob(subject + '*')
-
-for file in files:
-    os.remove(file)
-
-print('Subject files removed!')
+if __name__ == "__main__":
+    mp3_list, jpg_list = collate_media()
+    thumb = jpg_list[0]
+    movie_file_name, title = create_movie(mp3_list, jpg_list, subject)
+    upload_and_clean(thumb, movie_file_name, title)
