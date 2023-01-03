@@ -11,7 +11,7 @@ import glob
 from moviepy.editor import *
 from upload import upload
 
-openai.api_key = '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'
+openai.api_key = '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'
 
 
 # Animals= "Alligator,Anteater,Ape,Armadillo,Baboon,Bat,Bear,Beetle,Bongo,Camel,Centipede,Chameleon,Cheetah,Clownfish,Coati,Cockatoo,Crane,Crocodile,Deer,Drill,Duck,Eagle,Echidna,Elephant,Elk,Flamingo,Fox,Frigatebird,Gila monster,Giraffe,Gorilla,Guanaco,Hamster,Hawk,Hedgehog,Hermit crab,Hippo,Hippopotamus,Horse,Hummingbird,Hyena,Iguana,Impala,Jaguar,Kangaroo,Kingfisher,Kite,Kiwi,Koala,Komodo dragon,Kudu,Lemur,Leopard,Lion,Lionfish,Lizard,Lynx,Mole,Monkey,Newt,Nilgai,Numbat,Okapi,Opossum,Orangutan,Ostrich,Owl,Panda,Panther,Parrot,Peacock,Pelican,Penguin,Pigeon,Platypus,Puffin,Quail,Rabbit,Rattlesnake,Red panda,Reindeer,Rhinoceros,Rooster,Scorpion,Seal,Skunk,Snake,Sparrow,Squirrel,Swan,Toucan,Tiger,Turkey,Turtle,Vulture,Walrus,Wolf,Woodpecker,Yak,Zebra"
@@ -38,7 +38,6 @@ def create_script(subject, length):
     )
 
     script = text['choices'][0]['text']
-
     script = script.split('\n')
 
     print(script, '\n')
