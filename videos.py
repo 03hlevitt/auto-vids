@@ -13,16 +13,17 @@ from upload import upload
 
 openai.api_key = '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'
 
+
 # Animals= "Alligator,Anteater,Ape,Armadillo,Baboon,Bat,Bear,Beetle,Bongo,Camel,Centipede,Chameleon,Cheetah,Clownfish,Coati,Cockatoo,Crane,Crocodile,Deer,Drill,Duck,Eagle,Echidna,Elephant,Elk,Flamingo,Fox,Frigatebird,Gila monster,Giraffe,Gorilla,Guanaco,Hamster,Hawk,Hedgehog,Hermit crab,Hippo,Hippopotamus,Horse,Hummingbird,Hyena,Iguana,Impala,Jaguar,Kangaroo,Kingfisher,Kite,Kiwi,Koala,Komodo dragon,Kudu,Lemur,Leopard,Lion,Lionfish,Lizard,Lynx,Mole,Monkey,Newt,Nilgai,Numbat,Okapi,Opossum,Orangutan,Ostrich,Owl,Panda,Panther,Parrot,Peacock,Pelican,Penguin,Pigeon,Platypus,Puffin,Quail,Rabbit,Rattlesnake,Red panda,Reindeer,Rhinoceros,Rooster,Scorpion,Seal,Skunk,Snake,Sparrow,Squirrel,Swan,Toucan,Tiger,Turkey,Turtle,Vulture,Walrus,Wolf,Woodpecker,Yak,Zebra"
 
 # AnimalList = Animals.split(",")
 
-def create_script(subject):
+def create_script(subject, length):
     text = openai.Completion.create(
 
         model='text-davinci-003',
 
-        prompt='Write a 1 minute Youtube video script about a ' + subject + ' with 5 voiceovers and short numbered scene descriptions',
+        prompt=f'Write a 1 minute Youtube video script about a {subject} with {length} voiceovers and short numbered scene descriptions',
 
         temperature=0.7,
 
@@ -180,13 +181,13 @@ def cleanup(subject):
     print('Subject files removed!')
 
 
-def collate_media(subject):
-    script = image_creator(parse_script(create_script(subject)))
+def collate_media(subject, length):
+    script = image_creator(parse_script(create_script(subject, length)))
     print(script)
     jpg_list = []
     mp3_list = []
     i = 0
-    while i < 2:  # speed and file size
+    while i < length:  # speed and file size
         try:
             mp3_list.append(text_to_speech(list(script.keys())[i], subject, i))
             jpg_list.append(save_image(list(script.values())[i], subject, i))
@@ -204,6 +205,3 @@ def upload_and_clean(thumb, movie_file_name, title, subject):
         print("failed with %s", e)
         cleanup(subject)
     cleanup(subject)
-
-
-
