@@ -17,5 +17,6 @@ def generate_upload_video(length, subject):
         message = f"Update your api key ! \n{e}"
         click.echo(message)
 
+
 if __name__ == "__main__":
     generate_upload_video()
